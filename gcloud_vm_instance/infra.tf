@@ -10,7 +10,7 @@ resource "tls_private_key" "ssh" {
 
 resource "local_file" "ssh_private_key_pem" {
   content         = tls_private_key.ssh.private_key_pem
-  filename        = ".ssh/google_compute_engine"
+  filename        = "${var.ssh_key}"
   file_permission = "0600"
 }
 resource "google_compute_network" "vpc_network" {
@@ -68,10 +68,23 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
   }
   provisioner "remote-exec" {
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y docker"
+      "sudo apt update -y",
+      "sudo apt install apt-transport-https ca-certificates curl software-properties-common -y",
+      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg --yes",
+      "echo \"deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+      "sudo apt update -y",
+      "apt-cache policy docker-ce",
+      "sudo apt install docker-ce docker-ce-cli -y",
+      "git clone ${var.course_repo}"
     ]
   }
+  connection {
+      type        = "ssh"
+      host        = google_compute_instance.ubuntu-pro-focal-1.network_interface[0].access_config[0].nat_ip
+      user        = "${var.resources_prefix}"
+      private_key = file("${var.ssh_key}")
+      timeout     = "4m"
+   }
   
   zone = "europe-southwest1-c"
 }
