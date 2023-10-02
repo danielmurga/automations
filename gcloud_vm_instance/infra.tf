@@ -39,7 +39,7 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
     goog-ec-src = "vm_add-tf"
   }
 
-  machine_type = "e2-custom-2-1024"
+  machine_type = "e2-standard-2"
   tags         = ["allow-ssh"]
 
   metadata = {
