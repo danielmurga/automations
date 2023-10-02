@@ -40,7 +40,7 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
   }
 
   machine_type = "e2-standard-2"
-  tags         = ["allow-ssh"]
+  tags         = ["allow-ssh", "allow-8443"]
 
   metadata = {
     ssh-keys = "${split("@", data.google_client_openid_userinfo.me.email)[0]}:${tls_private_key.ssh.public_key_openssh}"
@@ -100,4 +100,16 @@ resource "google_compute_firewall" "allow_ssh" {
     ports    = ["22"]
   }
 }
+resource "google_compute_firewall" "allow_8443" {
+  name          = "${var.resources_prefix}-allow-8443"
+  network       = "default"
+  target_tags   = ["allow-8443"] // this targets our tagged VM
+  source_ranges = ["0.0.0.0/0"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8443"]
+  }
+}
+
 
