@@ -1,0 +1,17 @@
+https://confluence.suse.com/display/SUP/Support+bundle+kit+simulator
+
+How to use the simulator
+Download the Harvester support bundle to your computer.
+Extract the zip file and access the support bundle directory
+Use the command below to create the kubernetes context to access the support bundle content. This command might take a few minutes to complete.
+
+support-bundle-kit simulator
+
+The file with the context information is stored in the $home/.sim directory
+
+|
+Create secrets for clusterissuer
+
+kubectl create secret tls self-signed-default-cert -n cert-manager --cert ca.crt --key ca.key
+
+Now you can use kubectl commands to check the customer environment.

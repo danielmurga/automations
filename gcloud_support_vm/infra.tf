@@ -75,13 +75,18 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
       "sudo apt update -y",
       "apt-cache policy docker-ce",
       "sudo apt install docker-ce docker-ce-cli -y",
+      "sudo apt install make -y"
       "git clone ${var.support_bundle_repo}"
+      "cd ~/support-bundle-kit"
+      "sudo make"
+      "sudo cp bin/support-bundle-kit /usr/local/bin"
+      "sudo apt install unzip"
     ]
   }
   connection {
       type        = "ssh"
       host        = google_compute_instance.ubuntu-pro-focal-1.network_interface[0].access_config[0].nat_ip
-      user        = "${var.resources_prefix}"
+      user        = "${var.ssh_user}"
       private_key = file("${var.ssh_key}")
       timeout     = "4m"
    }

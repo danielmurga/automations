@@ -22,3 +22,8 @@ variable "support_bundle_repo" {
   type    = string
   default = "https://github.com/rancher/support-bundle-kit.git"
 }
+
+variable "ssh_user" {
+  type    = string
+  default = "dmurga"
+}
