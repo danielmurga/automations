@@ -81,7 +81,8 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
       "sudo make",
       "sudo cp bin/support-bundle-kit /usr/local/bin",
       "sudo apt install unzip",
-      "sudo snap install kubectl --classic"
+      "sudo snap install kubectl --classic",
+      "echo \"alias k=kubectl\" >> .bashrc"
     ]
   }
   connection {
