@@ -75,12 +75,13 @@ resource "google_compute_instance" "ubuntu-pro-focal-1" {
       "sudo apt update -y",
       "apt-cache policy docker-ce",
       "sudo apt install docker-ce docker-ce-cli -y",
-      "sudo apt install make -y"
-      "git clone ${var.support_bundle_repo}"
-      "cd ~/support-bundle-kit"
-      "sudo make"
-      "sudo cp bin/support-bundle-kit /usr/local/bin"
-      "sudo apt install unzip"
+      "sudo apt install make -y",
+      "git clone ${var.support_bundle_repo}",
+      "cd ~/support-bundle-kit",
+      "sudo make",
+      "sudo cp bin/support-bundle-kit /usr/local/bin",
+      "sudo apt install unzip",
+      "sudo snap install kubectl --classic"
     ]
   }
   connection {
